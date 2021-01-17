@@ -1,0 +1,114 @@
+<section class="p-shadow-10 p-grid">
+    <p-toolbar class="p-col-12 p-px-lg-6">
+        <div class="p-toolbar-group-left">
+            <button pButton type="button" (click)="visibleSidebarMenu = true" icon="pi pi-bars"
+                class="p-button-rounded p-button-outlined p-mr-2"></button>
+            <h1>Laundry</h1>
+        </div>
+
+        <div class="p-toolbar-group-right">
+            <p>Hello, username!</p>
+            <button pButton icon="pi pi-sign-out" label="Sign Out" class="p-button-text"
+                [routerLink]="['/login']"></button>
+        </div>
+    </p-toolbar>
+    <p-sidebar [(visible)]="visibleSidebarMenu" class="sideBar">
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link" [routerLink]="['/dashboard']" routerLinkActive="active"
+                    (click)="visibleSidebarMenu = false">
+                    <div class="p-grid">
+                        <div class="p-col-3 p-text-center">
+                            <i class="fal fa-home fa-lg"></i>
+                        </div>
+                        <div class="p-col-9">
+                            <span>Dashboard</span>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" [routerLink]="['/items']" routerLinkActive="active"
+                    (click)="visibleSidebarMenu = false">
+                    <div class="p-grid">
+                        <div class="p-col-3 p-text-center">
+                            <i class="fal fa-tshirt fa-lg"></i>
+                        </div>
+                        <div class="p-col-9">
+                            <span>Items</span>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" [routerLink]="['/item-details']" routerLinkActive="active"
+                    (click)="visibleSidebarMenu = false">
+                    <div class="p-grid">
+                        <div class="p-col-3 p-text-center">
+                            <i class="fal fa-info-circle fa-lg"></i>
+                        </div>
+                        <div class="p-col-9">
+                            <span>Item Details</span>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" [routerLink]="['/item-services']" routerLinkActive="active"
+                    (click)="visibleSidebarMenu = false">
+                    <div class="p-grid">
+                        <div class="p-col-3 p-text-center">
+                            <i class="fal fa-dryer-alt fa-lg"></i>
+                        </div>
+                        <div class="p-col-9">
+                            <span>Item Services</span>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" [routerLink]="['/users']" routerLinkActive="active"
+                    (click)="visibleSidebarMenu = false">
+                    <div class="p-grid">
+                        <div class="p-col-3 p-text-center">
+                            <i class="fal fa-users-cog fa-lg"></i>
+                        </div>
+                        <div class="p-col-9">
+                            <span>Users</span>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" [routerLink]="['/customers']" routerLinkActive="active"
+                    (click)="visibleSidebarMenu = false">
+                    <div class="p-grid">
+                        <div class="p-col-3 p-text-center">
+                            <i class="fal fa-users-crown fa-lg"></i>
+                        </div>
+                        <div class="p-col-9">
+                            <span>Customers</span>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" [routerLink]="['/transaction/laundry']" routerLinkActive="active"
+                    (click)="visibleSidebarMenu = false">
+                    <div class="p-grid">
+                        <div class="p-col-3 p-text-center">
+                            <i class="fal fa-file-invoice-dollar fa-lg"></i>
+                        </div>
+                        <div class="p-col-9">
+                            <span>Transaction</span>
+                        </div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </p-sidebar>
+</section>
+<section class="p-m-4 p-p-4">
+    <router-outlet></router-outlet>
+    <p-toast [baseZIndex]="100"></p-toast>
+</section>

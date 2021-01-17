@@ -1,0 +1,92 @@
+<h1>Add Laundry Transaction</h1>
+<div class="p-card p-p-6">
+    <div class="p-d-flex p-flex-column" *ngFor="let item of selectedItems">
+        <div class="p-formgrid p-grid p-align-center">
+            <div class="p-field p-col-2">
+                <label for="items">Item</label>
+            </div>
+            <div class="p-field p-col">
+                <p-dropdown [(ngModel)]="item.id" inputId="item" [options]="itemOptions" placeholder="Select Item">
+                    <ng-template let-option pTemplate="item">
+                        <span [class]="'item-' + option.value">{{option.label}}</span>
+                    </ng-template>
+                </p-dropdown>
+            </div>
+        </div>
+        <div class="p-formgrid p-grid p-align-center">
+            <div class="p-field p-col-2">
+                <label for="items">Quantity</label>
+            </div>
+            <div class="p-field p-col">
+                <input type="number" pInputText id="quantity" [(ngModel)]="item.quantity" required autofocus />
+            </div>
+        </div>
+    </div>
+    <div class="p-d-flex p-flex-column">
+        <div class="p-formgrid p-grid p-align-center">
+            <div class="p-field p-col-2">
+                <label for="items">Item</label>
+            </div>
+            <div class="p-field p-col">
+                <p-dropdown [(ngModel)]="detail.id" inputId="item" [options]="itemOptions" placeholder="Select Item">
+                    <ng-template let-option pTemplate="item">
+                        <span [class]="'item-' + option.value">{{option.label}}</span>
+                    </ng-template>
+                </p-dropdown>
+            </div>
+        </div>
+        <div class="p-formgrid p-grid p-align-center">
+            <div class="p-field p-col-2">
+                <label for="items">Quantity</label>
+            </div>
+            <div class="p-field p-col">
+                <input type="number" pInputText id="quantity" [(ngModel)]="detail.quantity" required autofocus />
+            </div>
+        </div>
+    </div>
+    <div class="p-grid p-mb-6">
+        <div class="p-col-3 p-offset-2">
+            <button pButton pRipple label="Add" icon="pi pi-plus" class="p-button-outlined p-button-rounded"
+                (click)="addItem(detail)"></button>
+        </div>
+    </div>
+    <h3 class="p-mt-6">Customer</h3>
+    <div class="p-d-flex p-flex-column">
+        <div class="p-formgrid p-grid p-align-center">
+            <div class="p-field p-col-2">
+                <label for="customerName">Full Name</label>
+            </div>
+            <div class="p-field p-col">
+                <input type="text" pInputText id="customerName" [(ngModel)]="customer.fullName" required autofocus />
+            </div>
+        </div>
+        <div class="p-formgrid p-grid p-align-center">
+            <div class="p-field p-col-2">
+                <label for="customerEmail">Email</label>
+            </div>
+            <div class="p-field p-col">
+                <input type="email" pInputText id="customerEmail" [(ngModel)]="customer.email" required autofocus />
+            </div>
+        </div>
+        <div class="p-formgrid p-grid p-align-center">
+            <div class="p-field p-col-2">
+                <label for="customerPhone">Phone</label>
+            </div>
+            <div class="p-field p-col">
+                <input type="text" pInputText id="customerPhone" [(ngModel)]="customer.phone" required autofocus />
+            </div>
+        </div>
+        <div class="p-formgrid p-grid p-align-center">
+            <div class="p-field p-col-2">
+                <label for="customerAddress">Address</label>
+            </div>
+            <div class="p-field p-col">
+                <input type="text" pInputText id="customerAddress" [(ngModel)]="customer.address" required autofocus />
+            </div>
+        </div>
+    </div>
+    <div class="p-mb-6 p-offset-2">
+        <button pButton pRipple label="Submit" icon="pi pi-send" class="p-button-rounded p-button-lg"
+            (click)="submitLaundry()"></button>
+    </div>
+</div>

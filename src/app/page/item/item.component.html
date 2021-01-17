@@ -1,0 +1,99 @@
+<h1>Item</h1>
+<div class="card">
+    <p-toolbar styleClass="p-mb-4">
+        <ng-template pTemplate="right">
+            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success p-mr-2"
+                (click)="openNew()"></button>
+            <button pButton pRipple [label]="Delete" icon="pi pi-trash" class="p-button-danger"
+                (click)="deleteSelectedItems()" [disabled]="!selectedItems || !selectedItems.length"></button>
+        </ng-template>
+    </p-toolbar>
+
+    <p-table #dt [value]="items" [rows]="10" [paginator]="true"
+        [globalFilterFields]="['itemDetails.name','services.name', 'services.hourDuration', 'cost']"
+        [(selection)]="selectedItems" [rowHover]="true" dataKey="id"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
+        <ng-template pTemplate="caption">
+            <div class="p-d-flex p-ai-center p-jc-between">
+                <h5 class="p-m-0">Manage Items</h5>
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                        placeholder="Search..." />
+                </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 3rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th pSortableColumn="itemDetails.name">Name <p-sortIcon field="name"></p-sortIcon>
+                </th>
+                <th pSortableColumn="services.name">Service <p-sortIcon field="serviceName"></p-sortIcon>
+                </th>
+                <th pSortableColumn="services.hourDuration">Duration(hour) <p-sortIcon field="serviceDuration">
+                    </p-sortIcon>
+                </th>
+                <th pSortableColumn="cost">Cost <p-sortIcon field="cost"></p-sortIcon>
+                </th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+            <tr>
+                <td>
+                    <p-tableCheckbox [value]="item"></p-tableCheckbox>
+                </td>
+                <td>{{item.itemDetails.name}}</td>
+                <td>{{item.services.name}}</td>
+                <td>{{item.services.hourDuration}}</td>
+                <td>{{item.cost | currency:'Rp'}}</td>
+                <td>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+                        (click)="editItem(item)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                        (click)="deleteItem(item)"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="p-d-flex p-ai-center p-jc-between">
+                In total there are {{items ? items.length : 0 }} items.
+            </div>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog [(visible)]="itemDialog" [style]="{width: '700px'}" header="Item Details" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="p-field">
+            <label for="item">Item Details</label>
+            <p-dropdown [(ngModel)]="item.itemDetails" inputId="item" [options]="itemDetails" placeholder="Select">
+                <ng-template let-option pTemplate="item">
+                    <span [class]="'item-' + option.value">{{option.label}}</span>
+                </ng-template>
+            </p-dropdown>
+        </div>
+        <div class="p-field">
+            <label for="services">Item Service</label>
+            <p-dropdown [(ngModel)]="item.services" inputId="services" [options]="itemServices" placeholder="Select">
+                <ng-template let-option pTemplate="service">
+                    <span [class]="'service-' + option.value">{{option.label}}</span>
+                </ng-template>
+            </p-dropdown>
+        </div>
+        <div class="p-field">
+            <label for="cost">Cost</label>
+            <p-inputNumber id="cost" [(ngModel)]="item.cost" mode="currency" currency="IDR" locale="id">
+            </p-inputNumber>
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveItem()"></button>
+    </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

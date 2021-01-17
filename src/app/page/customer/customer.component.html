@@ -1,0 +1,97 @@
+<h1>Customers</h1>
+<div class="card">
+    <p-toolbar styleClass="p-mb-4">
+        <ng-template pTemplate="right">
+            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success p-mr-2"
+                (click)="openNew()"></button>
+            <button pButton pRipple [label]="Delete" icon="pi pi-trash" class="p-button-danger"
+                (click)="deleteSelectedCustomers()"
+                [disabled]="!selectedCustomers || !selectedCustomers.length"></button>
+        </ng-template>
+    </p-toolbar>
+
+    <p-table #dt [value]="customers" [rows]="10" [paginator]="true"
+        [globalFilterFields]="['profile.fullName', 'profile.email', 'profile.phone', 'profile.address']"
+        [(selection)]="selectedCustomers" [rowHover]="true" dataKey="id"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
+        <ng-template pTemplate="caption">
+            <div class="p-d-flex p-ai-center p-jc-between">
+                <h5 class="p-m-0">Manage Customers</h5>
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                        placeholder="Search..." />
+                </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 3rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th pSortableColumn="profile.fullName">Full Name <p-sortIcon field="fullName"></p-sortIcon>
+                </th>
+                <th pSortableColumn="profile.email">Email <p-sortIcon field="email"></p-sortIcon>
+                </th>
+                <th pSortableColumn="profile.phone">Phone <p-sortIcon field="phone"></p-sortIcon>
+                </th>
+                <th pSortableColumn="profile.address">Address <p-sortIcon field="address"></p-sortIcon>
+                </th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-customer>
+            <tr>
+                <td>
+                    <p-tableCheckbox [value]="customer"></p-tableCheckbox>
+                </td>
+                <td>{{customer.profile.fullName}}</td>
+                <td>{{customer.profile.email}}</td>
+                <td>{{customer.profile.phone}}</td>
+                <td>{{customer.profile.address}}</td>
+                <td>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+                        (click)="editCustomer(customer)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                        (click)="deleteCustomer(customer)"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="p-d-flex p-ai-center p-jc-between">
+                In total there are {{customers ? customers.length : 0 }} customers.
+            </div>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog [(visible)]="customerDialog" [style]="{width: '600px'}" header="Customer" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="p-field">
+            <label for="fullName">Full Name</label>
+            <input type="text" pInputText id="fullName" [(ngModel)]="customer.profile.fullName" required autofocus />
+            <small class="p-invalid" *ngIf="submitted && !customer.profile.fullName">Full Name is required.</small>
+        </div>
+        <div class="p-field">
+            <label for="email">Email</label>
+            <input type="email" pInputText id="email" [(ngModel)]="customer.profile.email" required autofocus />
+            <small class="p-invalid" *ngIf="submitted && !customer.profile.email">Email is required.</small>
+        </div>
+        <div class="p-field">
+            <label for="phone">Phone</label>
+            <input type="tel" pInputText id="phone" [(ngModel)]="customer.profile.phone" required autofocus />
+            <small class="p-invalid" *ngIf="submitted && !customer.profile.phone">Phone is required.</small>
+        </div>
+        <div class="p-field">
+            <label for="address">Address</label>
+            <input type="text" pInputText id="address" [(ngModel)]="customer.profile.address" required autofocus />
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveCustomer()"></button>
+    </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

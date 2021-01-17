@@ -1,0 +1,136 @@
+<h1>Laundry Transactions</h1>
+<div class="card">
+    <p-toolbar styleClass="p-mb-4">
+        <ng-template pTemplate="right">
+            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success p-mr-2"
+                [routerLink]="['/transaction/laundry/add']"></button>
+        </ng-template>
+    </p-toolbar>
+
+    <p-table #dt [value]="transactions" [rows]="10" [paginator]="true" styleClass="p-datatable-responsive"
+        [globalFilterFields]="['receiptNumber', 'customer.fullName', 'startDate', 'totalCost', 'user.username']"
+        [rowHover]="true" dataKey="id" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [showCurrentPageReport]="true">
+        <ng-template pTemplate="caption">
+            <div class="p-d-flex p-ai-center p-jc-between">
+                <h5 class="p-m-0">Transactions List</h5>
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                        placeholder="Search..." />
+                </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="receiptNumber">Invoice <p-sortIcon field="receiptNumber"></p-sortIcon>
+                </th>
+                <th pSortableColumn="customer.fullName">Customer Name <p-sortIcon field="fullName"></p-sortIcon>
+                </th>
+                <th pSortableColumn="startDate">Start Date <p-sortIcon field="startDate"></p-sortIcon>
+                </th>
+                <th pSortableColumn="totalCost">Total Cost <p-sortIcon field="totalCost"></p-sortIcon>
+                </th>
+                <th pSortableColumn="user.username">User <p-sortIcon field="user"></p-sortIcon>
+                </th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-trx>
+            <tr>
+                <td>{{trx.receiptNumber}}</td>
+                <td>{{trx.customer.fullName}}</td>
+                <td>{{trx.startDate | date}}</td>
+                <td>{{trx.totalCost | currency:'IDR'}}</td>
+                <td>{{trx.user.username}}</td>
+                <td>
+                    <button pButton pRipple icon="pi pi-info" class="p-button-rounded p-button-success p-mr-2"
+                        (click)="showDetail(trx)"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="p-d-flex p-ai-center p-jc-between">
+                In total there are {{transactions ? transactions.length : 0 }} transactions.
+            </div>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog [(visible)]="laundryDialog" [style]="{width: '1000px'}" header="Transaction Details" [modal]="true"
+    styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="p-field">
+            <label for="receiptNumber">Invoice</label>
+            <input type="text" pInputText id="receiptNumber" [(ngModel)]="transaction.receiptNumber" disabled />
+        </div>
+        <div class="p-formgrid p-grid">
+            <div class="p-field p-col">
+                <label for="startDate">Start Date</label>
+                <input type="text" pInputText id="startDate" [(ngModel)]="transaction.startDate" disabled />
+            </div>
+            <div class="p-field p-col">
+                <label for="totalCost">Total Cost</label>
+                <p-inputNumber id="totalCost" [(ngModel)]="transaction.totalCost" mode="currency" currency="IDR"
+                    locale="id" disabled></p-inputNumber>
+            </div>
+        </div>
+        <h4>Customer</h4>
+        <div class="p-field">
+            <label for="customerName">Name</label>
+            <input type="text" pInputText id="customerName" [(ngModel)]="transaction.customer.fullName" disabled />
+        </div>
+        <div class="p-formgrid p-grid">
+            <div class="p-field p-col">
+                <label for="customerEmail">Email</label>
+                <input type="email" pInputText id="customerEmail" [(ngModel)]="transaction.customer.email" disabled />
+            </div>
+            <div class="p-field p-col">
+                <label for="customerPhone">Phone</label>
+                <input type="text" pInputText id="customerPhone" [(ngModel)]="transaction.customer.phone" disabled />
+            </div>
+        </div>
+        <div class="p-field">
+            <label for="customerAddress">Address</label>
+            <input type="text" pInputText id="customerAddress" [(ngModel)]="transaction.customer.address" disabled />
+        </div>
+        <div *ngFor="let item of transaction.items; index as i">
+            <h5 class="p-mt-6">Item #{{i+1}}</h5>
+            <div class="p-formgrid p-grid">
+                <div class="p-field p-col">
+                    <label for="item{{i}}">Item</label>
+                    <input type="text" pInputText id="item{{i}}" [(ngModel)]="item.itemDetails.name" disabled />
+                </div>
+                <div class="p-field p-col">
+                    <label for="service{{i}}">Service</label>
+                    <input type="text" pInputText id="service{{i}}" [(ngModel)]="item.services.name" disabled />
+                </div>
+            </div>
+            <div class="p-formgrid p-grid">
+                <div class="p-field p-col">
+                    <label for="quantity{{i}}">Quantity</label>
+                    <input type="number" pInputText id="quantity{{i}}" [(ngModel)]="item.quantity" disabled />
+                </div>
+                <div class="p-field p-col">
+                    <label for="cost{{i}}">Cost</label>
+                    <p-inputNumber id="cost{{i}}" [(ngModel)]="item.cost" mode="currency" currency="IDR" locale="id"
+                        disabled></p-inputNumber>
+                </div>
+            </div>
+            <div class="p-field">
+                <label for="finishDate{{i}}">Finish Date</label>
+                <input type="text" pInputText id="finishDate{{i}}" [(ngModel)]="item.finishDate" disabled />
+            </div>
+        </div>
+        <div class="p-field p-mt-4">
+            <label for="userName">User</label>
+            <input type="text" pInputText id="userName" [(ngModel)]="transaction.user.username" disabled />
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Ok" icon="pi pi-check" class="p-button-text" (click)="hideDialog()"></button>
+    </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
